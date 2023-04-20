@@ -27,6 +27,10 @@ const create_connect_win = () => {
     connect_to_server(socket_info.ip, socket_info.port);
   });
 
+  ipcMain.on('send_chat_msg', function(msg) {
+    client.write(msg);
+  });
+
   win.loadFile('src/components/connect/index.html');
 }
 

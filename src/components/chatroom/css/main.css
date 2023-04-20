@@ -6,11 +6,11 @@
 
 /* Styling the main container */
 .container {
-    width: 80%;
+    width: 100%;
     margin: auto;
-    margin-top: 2rem;
+    margin-top: .2rem;
     letter-spacing: 0.5px;
-    height: 80%;
+    height: 10%;
 }
 
 img {
@@ -26,7 +26,7 @@ img {
     height: 10%;
     border-bottom: none;
     display: inline-block;
-    background-color: #efefef;
+    background-color: #242424;
     margin: 0;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -60,7 +60,7 @@ img {
 }
 
 .msg-inbox {
-    border: 1px solid #ccc;
+    /*border: 1px solid #272727;*/
     overflow: hidden;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -72,7 +72,7 @@ img {
 }
 
 .msg-page {
-    max-height: 500px;
+    max-height: 90%;
     overflow-y: auto;
 }
 
@@ -90,7 +90,7 @@ img {
         margin-right: 20px;
         outline: none !important;
         border-radius: 20px;
-        width: 61% !important;
+        width: 50% !important;
         background-color: #fff;
         position: relative;
         display: flex;
@@ -104,7 +104,16 @@ img {
         width: 1%;
         margin-bottom: 0;
     }
-    
+
+    textarea {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 10px;
+        border: none;
+        padding: .375rem 0.75rem;
+    }
+    /*
     .form-control {
         border: none !important;
         border-radius: 20px !important;
@@ -118,7 +127,7 @@ img {
         background-clip: padding-box;
         transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
-    
+    */
     .input-group-text {
         background: transparent !important;
         border: none !important;
@@ -158,6 +167,7 @@ received-chats-img {
 
 .received-msg {
     display: inline-block;
+    background-color: rgba(255, 255, 255, 0.849);
     padding: 0 0 0 10px;
     vertical-align: top;
     width: 92%;
@@ -193,8 +203,8 @@ received-chats-img {
 }
 
 .outgoing-chats-msg p {
-    background-color: #3a12ff;
-    background-image: linear-gradient(45deg, #ee087f 0%, #DD2A7B 25%, #9858ac 50%, #8134AF 75%, #515BD4 100%);
+    background-color: #4551be;
+    /*background-image: linear-gradient(45deg, #ee087f 0%, #DD2A7B 25%, #9858ac 50%, #8134AF 75%, #515BD4 100%);*/
     color: #fff;
     border-radius: 10px;
     font-size: 14px;
