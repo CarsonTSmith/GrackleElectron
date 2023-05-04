@@ -90,18 +90,19 @@
 
                 <div class="msg-bottom">
                     <div class="input-group">
-                        <textarea rows='3' id='text-input' class="form-control" placeholder="Message"></textarea>
-                        <!--
-                        <span class="input-group-text send-icon ">
-                            <i class="bi bi-send "></i>
-                        </span>
-                        -->
+                        <form id="send-message-form">
+                            <input rows='3' id='text-input' class="form-control" placeholder="Message"></input>
+                            <button type='submit' class="input-group-text send-icon" id="send-button">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="../js/chatroom.js"></script>
 </body>
 
 </html>
