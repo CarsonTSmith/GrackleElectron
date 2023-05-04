@@ -10,5 +10,10 @@
   },
   "scripts": {
     "start": "electron ."
+  },
+  "dependencies": {
+    "audic": "^3.0.1",
+    "play-sound": "^1.1.5",
+    "sound-play": "^1.1.0"
   }
 }

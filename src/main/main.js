@@ -1,10 +1,15 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const net  = require('net');
+var player = require('play-sound')(opts = {})
+
+
+
 
 class tcpclient {
   constructor() {
     this.socket = new net.Socket();
+    this.username = "";
     this.buf = "";
     this.header_is_done = false;
     this.body_size = 0;
@@ -18,6 +23,7 @@ class tcpclient {
     this.socket.on('error', function(e) {
       win.webContents.send('cant_connect_to_server');
       console.log('cant connect to server');
+      win.loadFile('src/components/connect/index.html');
     });
     
     this.socket.on('connect', function(e) {
@@ -26,7 +32,7 @@ class tcpclient {
       win.loadFile('src/components/chatroom/html/index.html');
     });
     
-    this.socket.on('data', function(data) { // process incoming messages
+    this.socket.on('data', async function(data) { // process incoming messages
       console.log('data received');
       if (this.buf == null) {
         this.buf = data.toString();
@@ -61,11 +67,21 @@ class tcpclient {
           case "/chat/send":
             console.log("/chat/send received");
             console.log(jsonbody["message"]);
+            if (jsonbody["username"] != client.username) {
+              player.play('/home/carson/Projects/Grackle/GrackleElectron/sounds/notification_sound.mp3', function (err) {
+                if (err) {
+                  console.log("Audio finished");
+                }
+              });
+            }
+        
             break;
           default:
             console.log("default");
             break;
         }
+
+        this.buf = ""; 
       }
     }); // END process incoming messages
     
@@ -99,6 +115,7 @@ const create_connect_win = () => {
   ipcMain.on('app: connect_to_server', function(event, socket_info) {
     console.log(socket_info);
     client.socket.connect(socket_info.port, socket_info.ip);
+    client.username = socket_info.username;
   });
 
   ipcMain.on('send_chat_msg', function(event, msg) {
