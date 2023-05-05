@@ -1,7 +1,9 @@
+
+
 (function ($) {
     "use strict";
 
-    
+
     /*==================================================================
     [ Validate ]*/
     var input = $('.validate-input .input100');
@@ -25,12 +27,14 @@
                            port: document.getElementById('port').value,
                            username: document.getElementById('username').value
         };
+
         window.electronAPI.cant_connect_to_server((event, function() {
             document.getElementById('cant-connect-txt').innerText = 'Failed to Connect';
             console.log('cant connect to server');
         }));
-        
+
         window.electronAPI.connect_to_server(socket_info);
+        console.log(socket_info);
     });
 
 

@@ -21,16 +21,31 @@ class tcpclient {
 
   set_socket_listeners() {
     this.socket.on('error', function(e) {
-      win.webContents.send('cant_connect_to_server');
+      window.win.webContents.send('cant_connect_to_server');
       console.log('cant connect to server');
-      win.loadFile('src/components/connect/index.html');
+      console.log(window.current_window);
+      if (window.current_window === 'src/components/connect/index.html') {
+        return;
+      }
+
+      window.win.loadFile('src/components/connect/index.html');
+      window.current_window = 'src/components/connect/index.html';
+      console.log('window reloaded');
     });
+
+
+
     
     this.socket.on('connect', function(e) {
       console.log('connected to server');
       //win.setSize(1920, 1080);
-      win.loadFile('src/components/chatroom/html/index.html');
+      window.win.loadFile('src/components/chatroom/html/index.html');
+      window.current_window = 'src/components/chatroom/html/index.html';
+      window.win.webContents.send('get_username', client.username);
     });
+
+
+
     
     this.socket.on('data', async function(data) { // process incoming messages
       console.log('data received');
@@ -40,8 +55,9 @@ class tcpclient {
         this.buf += data.toString();
       }
       
-      if (this.buf.length >= 17) {
-        let body_len = this.buf.substr(0, 8);
+      let body_len;
+      if (this.buf.length >= 8) {
+        body_len = this.buf.substr(0, 8);
         console.log(body_len);
         console.log("hit here");
         this.body_size = parseInt(body_len);
@@ -80,19 +96,42 @@ class tcpclient {
             console.log("default");
             break;
         }
-
-        this.buf = ""; 
+        
+        // remove the message that was just processed from the front of the buf
+        this.buf = this.buf.replace(body_len + bodystr, ""); 
       }
     }); // END process incoming messages
+
+
+
     
     this.socket.on('end', function() {
-      win.loadFile('src/components/connect/index.html');
+      window.win.loadFile('src/components/connect/index.html');
+      window.current_window = 'src/components/connect/index.html';
     });
+
+
+
   }
 }
 
 
-let win;
+
+
+
+class main_window {
+  constructor() {
+    this.win;
+    this.current_window;
+  }
+  
+}
+
+
+
+
+
+let window = new main_window();
 let client = new tcpclient();
 
 
@@ -102,7 +141,7 @@ let client = new tcpclient();
 const create_connect_win = () => {
   const connect_win_width  = 0.5 * 1920;
   const conenct_win_height = 0.7 * 1080;
-  win = new BrowserWindow({
+  window.win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname + '/preloads/', 'connect_preload.js')
@@ -123,9 +162,12 @@ const create_connect_win = () => {
     client.socket.write(msg);
   });
 
-  win.loadFile('src/components/connect/index.html');
+  window.win.loadFile('src/components/connect/index.html');
+  window.current_window = 'src/components/connect/index.html';
 }
 
+
+// entry point
 app.whenReady().then(() => {
   create_connect_win();
 
@@ -135,5 +177,4 @@ app.whenReady().then(() => {
   });
 
 });
-
 
