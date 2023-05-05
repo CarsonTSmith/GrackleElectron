@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const net  = require('net');
+const { time } = require('console');
 var player = require('play-sound')(opts = {})
 
 
@@ -23,14 +24,12 @@ class tcpclient {
     this.socket.on('error', function(e) {
       window.win.webContents.send('cant_connect_to_server');
       console.log('cant connect to server');
-      console.log(window.current_window);
       if (window.current_window === 'src/components/connect/index.html') {
         return;
       }
 
       window.win.loadFile('src/components/connect/index.html');
       window.current_window = 'src/components/connect/index.html';
-      console.log('window reloaded');
     });
 
 
@@ -58,16 +57,10 @@ class tcpclient {
       let body_len;
       if (this.buf.length >= 8) {
         body_len = this.buf.substr(0, 8);
-        console.log(body_len);
-        console.log("hit here");
         this.body_size = parseInt(body_len);
-        console.log(this.body_size);
       }
 
-      console.log(this.buf);
       if ((this.body_size + 8) >= this.buf.length ) {
-        // parse json
-        console.log("in the if");
         let bodystr;
         for (let i = 8; i < this.buf.length; ++i) {
           if (this.buf[i] == '{') {
@@ -77,13 +70,9 @@ class tcpclient {
         }
 
         let jsonbody = JSON.parse(bodystr);
-        console.log(jsonbody["path"]);
-
         switch (jsonbody["path"]) {
           case "/chat/send":
-            console.log("/chat/send received");
-            console.log(jsonbody["message"]);
-            if (jsonbody["username"] != client.username) {
+            if (jsonbody["username"] == client.username) {
               player.play('/home/carson/Projects/Grackle/GrackleElectron/sounds/notification_sound.mp3', function (err) {
                 if (err) {
                   console.log("Audio finished");
@@ -158,8 +147,11 @@ const create_connect_win = () => {
   });
 
   ipcMain.on('send_chat_msg', function(event, msg) {
-    console.log('writing msg = ' + msg);
-    client.socket.write(msg);
+    body_str = JSON.stringify({path: msg.path, message: msg.message, username: client.username, client: msg.client});
+    msg_len = String(body_str.length).padStart(8, '0');
+    msg_to_send = msg_len + body_str;
+    client.socket.write(msg_to_send);
+    console.log('wrote msg = ' + msg_to_send);
   });
 
   window.win.loadFile('src/components/connect/index.html');
@@ -177,4 +169,6 @@ app.whenReady().then(() => {
   });
 
 });
+
+
 
