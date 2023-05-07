@@ -1,5 +1,16 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
 #msgs-container {
     background-color: rgb(34, 34, 34);
+    position: relative;
+    height: 83vh;
+}
+
+#chat-container {
+    background-color: rgb(34, 34, 34);
+    height: 100vh;
 }
 
 #nav-container {
@@ -12,4 +23,8 @@
 
 .outgoing-msg, .incoming-msg {
     border-radius: 20px;
+}
+
+textarea {
+    font: 500;
 }

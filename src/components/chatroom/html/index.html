@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="../css/main.css">
 </head>
 
@@ -19,24 +23,24 @@
         <div class="col-sm-3" id="nav-container">
             Column
         </div>
-        <div class="col-sm-9 d-flex flex-column">
-          <div class="pt-3 pe-3" data-mdb-perfect-scrollbar="true" id="msgs-container">
+        <div class="col-sm-9" id="chat-container">
+          <div class="pt-3 pe-3 overflow-auto" data-mdb-perfect-scrollbar="true" id="msgs-container">
 
-            <div class="d-flex flex-row justify-content-start">
+            <!-- <div class="d-flex flex-row justify-content-start">
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
                 alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
+              <div class="overflow-auto">
                 <p class="small p-2 ms-3 mb-1 rounded-3 incoming-msg" style="background-color: #f5f6f7;">Lorem ipsum
                   dolor
                   sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                   dolore
                   magna aliqua.</p>
-                <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
+                <p class="small ms-3 mb-3 rounded-3 text-muted justify-content-end">12:00 PM | Aug 13</p>
               </div>
             </div>
 
             <div class="d-flex flex-row justify-content-end">
-              <div>
+              <div class="overflow-auto">
                 <p class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">Ut enim ad minim veniam,
                   quis
                   nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
@@ -44,97 +48,19 @@
               </div>
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                 alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
-
-            <div class="d-flex flex-row justify-content-start">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
-                <p class="small p-2 ms-3 mb-1 rounded-3 incoming-msg" style="background-color: #f5f6f7;">Duis aute
-                  irure
-                  dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                </p>
-                <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-              </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end">
-              <div>
-                <p class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">Excepteur sint occaecat
-                  cupidatat
-                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
-
-            <div class="d-flex flex-row justify-content-start">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
-                <p class="small p-2 ms-3 mb-1 rounded-3 incoming-msg" style="background-color: #f5f6f7;">Sed ut
-                  perspiciatis
-                  unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                  rem
-                  aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                  dicta
-                  sunt explicabo.</p>
-                <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-              </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end">
-              <div>
-                <p class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">Nemo enim ipsam
-                  voluptatem quia
-                  voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-                  qui
-                  ratione voluptatem sequi nesciunt.</p>
-                <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
-
-            <div class="d-flex flex-row justify-content-start">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-              <div>
-                <p class="small p-2 ms-3 mb-1 rounded-3 incoming-msg" style="background-color: #f5f6f7;">Neque porro
-                  quisquam
-                  est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non
-                  numquam
-                  eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                <p class="small ms-3 mb-3 rounded-3 text-muted float-end">12:00 PM | Aug 13</p>
-              </div>
-            </div>
-
-            <div class="d-flex flex-row justify-content-end">
-              <div>
-                <p class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">Ut enim ad minima veniam,
-                  quis
-                  nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea
-                  commodi
-                  consequatur?</p>
-                <p class="small me-3 mb-3 rounded-3 text-muted">12:00 PM | Aug 13</p>
-              </div>
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="avatar 1" style="width: 45px; height: 100%;">
-            </div>
+            </div> -->
 
           </div>
 
           <div class="d-flex justify-content-end input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text">Send</span>
+                <button class="btn-primary btn-sm" id="send-button">Send</span>
             </div>
-            <textarea class="form-control" aria-label="With textarea" rows="3"></textarea>
+            <textarea class="form-control" aria-label="With textarea" rows="3" placeholder="Message" id="text-input"></textarea>
           </div>
 
         </div>
 
-        
       </div>
     </div>
 

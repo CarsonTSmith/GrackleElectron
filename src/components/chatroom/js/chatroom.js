@@ -1,24 +1,23 @@
-const form = document.getElementById('send-message-form');
-
 let username = '';
 
+let send_button = document.getElementById('send-button');
 
 
 function add_outgoing_message(jsonbody)
 {
     var div = document.createElement('div');
-    div.setAttribute('class', 'outgoing-chats');
+    div.setAttribute('class', 'd-flex flex-row justify-content-end');
     div.innerHTML = `
-        <div class="outgoing-msg">
-            <div class="outgoing-chats-msg">
-                <p class="multi-msg">
-                    ${jsonbody['message']}
-                </p>
-                <span class="time">
-                    ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
-                </span>
-            </div>
+        <div class="overflow-auto">
+            <p class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">
+                ${jsonbody['message']}
+            </p>
+            <p class="small me-3 mb-3 rounded-3 text-muted">
+                ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
+            </p>
         </div>
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+        alt="avatar 1" style="width: 45px; height: 100%;">
     `;
     document.getElementById('msgs-container').appendChild(div);
 }
@@ -26,17 +25,17 @@ function add_outgoing_message(jsonbody)
 function add_incoming_message(jsonbody)
 {
     var div = document.createElement('div');
-    div.setAttribute('class', 'received-chats');
+    div.setAttribute('class', 'd-flex flex-row justify-content-start');
     div.innerHTML = `
-        <div class="received-msg">
-            <div class="received-msg-inbox">
-                <p class="multi-msg">
-                    ${jsonbody['message']}
-                </p>
-                <span class="time">
-                    ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
-                </span>
-            </div>
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
+        alt="avatar 1" style="width: 45px; height: 100%;">
+        <div class="overflow-auto">
+            <p class="small p-2 ms-3 mb-1 rounded-3 incoming-msg" style="background-color: #f5f6f7;">
+                ${jsonbody['message']}
+            </p>
+            <p class="small ms-3 mb-3 rounded-3 text-muted">
+                ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
+            </p>
         </div>
     `;
     document.getElementById('msgs-container').appendChild(div);
@@ -50,10 +49,8 @@ function append_message(body_obj)
     }
 
     if (body_obj['username'] === username) {
-        // outgoing message
         add_outgoing_message(body_obj);
     } else {
-        // incoming message
         add_incoming_message(body_obj);
     }
 }
@@ -67,15 +64,15 @@ window.electronAPI.get_username_from_main(function(event, usernamein) {
 window.electronAPI.chat_msg_to_renderer(function(event, body_obj) {
     append_message(body_obj);
     let scroll = document.getElementById('msgs-container');
-    if (Math.abs(scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight) < 150) {
+    if (Math.abs(scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight) < 250) {
         scroll.scrollTop = scroll.scrollHeight;
     }
     
     console.log(body_obj);
 });
 
-form.addEventListener('submit', function(ev) {
-    ev.preventDefault();
+send_button.addEventListener('click', function(ev) {
+    // ev.preventDefault();
     console.log('button pressed');
     body_obj = {path: '/chat/send', message: document.getElementById('text-input').value, client: "Grackle Electron"};
     window.electronAPI.send_chat_msg(body_obj);
