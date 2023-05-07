@@ -74,7 +74,7 @@ class tcpclient {
           case "/chat/send":
             window.win.webContents.send('get_username_from_main', client.username);
             window.win.webContents.send('chat_msg_to_renderer', jsonbody);
-            if (jsonbody["username"] != client.username) {
+            if ((jsonbody["username"] != client.username)) {
               player.play('/home/carson/Projects/Grackle/GrackleElectron/sounds/notification_sound.mp3', function (err) {
                 if (err) {
                   console.log("Audio finished");
