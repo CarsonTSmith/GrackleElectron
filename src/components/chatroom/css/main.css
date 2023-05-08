@@ -16,6 +16,7 @@ body {
 #nav-container {
     background-color: rgb(26, 26, 26);
 }
+
 .incoming-msg {
     background-color: #f5f6f7;
 }
@@ -30,4 +31,16 @@ body {
 
 textarea {
     font: 500;
+}
+
+.user-time-stamp {
+    color: #dfdfdf;
+}
+
+.wrap-break {
+    word-wrap: break-word;
+}
+
+#send-button {
+    background-color: rgba(65, 75, 216, 0.918);
 }

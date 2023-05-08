@@ -4,7 +4,7 @@ let send_button = document.getElementById('send-button');
 let text_input  = document.getElementById('text-input');
 
 
-text_input.addEventListener('keypress', function(event) {
+text_input.addEventListener('keyup', function(event) {
     if ((event.key == 'Enter') && (!event.shiftKey)) {
         console.log('enter pressed');
         body_obj = {path: '/chat/send', message: document.getElementById('text-input').value, client: "Grackle Electron"};
@@ -13,6 +13,16 @@ text_input.addEventListener('keypress', function(event) {
         reset_cursor(document.getElementById('text-input'));
         console.log('sent to server');
     }
+});
+
+send_button.addEventListener('click', function(ev) {
+    // ev.preventDefault();
+    console.log('button pressed');
+    body_obj = {path: '/chat/send', message: document.getElementById('text-input').value, client: "Grackle Electron"};
+    window.electronAPI.send_chat_msg(body_obj);
+    document.getElementById('text-input').value = "";
+    reset_cursor(document.getElementById('text-input'));
+    console.log('sent to server');
 });
 
 function reset_cursor(txtElement) { 
@@ -32,10 +42,8 @@ function add_outgoing_message(jsonbody)
     div.setAttribute('class', 'd-flex flex-row justify-content-end');
     div.innerHTML = `
         <div class="overflow-auto text-wrap">
-            <pre class="small p-2 me-3 mb-1 text-white rounded-3 outgoing-msg">${jsonbody['message']}</pre>
-            <p class="small me-3 mb-3 rounded-3 text-muted">
-                ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
-            </p>
+            <pre class="small p-2 me-3 mb-1 text-white rounded-3 text-wrap wrap-break outgoing-msg">${jsonbody['message']}</pre>
+            <p class="small me-3 mb-3 rounded-3 user-time-stamp">${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}</p>
         </div>
         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
         alt="avatar 1" style="width: 45px; height: 100%;">
@@ -51,10 +59,8 @@ function add_incoming_message(jsonbody)
         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
         alt="avatar 1" style="width: 45px; height: 100%;">
         <div class="overflow-auto">
-            <pre class="small p-2 ms-3 mb-1 rounded-3 incoming-msg">${jsonbody['message']}</pre>
-            <p class="small ms-3 mb-3 rounded-3 text-muted">
-                ${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}
-            </p>
+            <pre class="small p-2 ms-3 mb-1 rounded-3 text-wrap wrap-break incoming-msg">${jsonbody['message']}</pre>
+            <p class="small ms-3 mb-3 rounded-3 user-time-stamp">${jsonbody['username']} ${ '--' } ${jsonbody['timestamp']}</p>
         </div>
     `;
     document.getElementById('msgs-container').appendChild(div);
@@ -88,13 +94,4 @@ window.electronAPI.chat_msg_to_renderer(function(event, body_obj) {
     }
     
     console.log(body_obj);
-});
-
-send_button.addEventListener('click', function(ev) {
-    // ev.preventDefault();
-    console.log('button pressed');
-    body_obj = {path: '/chat/send', message: document.getElementById('text-input').value, client: "Grackle Electron"};
-    window.electronAPI.send_chat_msg(body_obj);
-    document.getElementById('text-input').value = "";
-    console.log('sent to server');
 });
