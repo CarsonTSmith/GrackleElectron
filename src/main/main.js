@@ -1,8 +1,61 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const net  = require('net');
-const { time } = require('console');
-var player = require('play-sound')(opts = {})
+const dgram = require('dgram');
+const player = require('play-sound')(opts = {})
+const {autoUpdater} = require('electron-updater');
+
+
+
+
+
+
+
+autoUpdater.on('update-available', () => {
+  window.win.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  window.win.webContents.send('update_downloaded');
+});
+
+
+
+
+
+class udpclient {
+  constructor() {
+    this.socket = dgram.createSocket('udp4');
+    this.dgram_size = 1024;
+    this.buf = '';
+    this.username;
+    this.ip;
+    this.port;
+    this.set_socket_listeners();
+  }
+
+  set_socket_listeners() {
+    this.socket.on('message', async function(msg) {
+      console.log('datagram received');
+      console.log(msg.toString());
+    });
+  }
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -11,7 +64,7 @@ class tcpclient {
   constructor() {
     this.socket = new net.Socket();
     this.username = "";
-    this.buf = "";
+    this.buf = new Buffer(1024);
     this.header_is_done = false;
     this.body_size = 0;
     this.body_bytes_read = 0
@@ -41,12 +94,16 @@ class tcpclient {
       window.win.loadFile('src/components/chatroom/html/index.html');
       window.current_window = 'src/components/chatroom/html/index.html';
       window.win.webContents.send('get_username', client.username);
+      console.log(clientudp);
+      clientudp.socket.send("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 0, clientudp.dgram_size, clientudp.port, clientudp.ip, function() {
+        console.log('dgram sent');
+      });
     });
 
 
 
     
-    this.socket.on('data', async function(data) { // process incoming messages
+    this.socket.on('data', function(data) { // process incoming messages
       console.log('data received');
       if (this.buf == null) {
         this.buf = data.toString();
@@ -124,6 +181,7 @@ class main_window {
 
 let window = new main_window();
 let client = new tcpclient();
+let clientudp = new udpclient();
 
 
 //const primary_screen     = screen.getPrimaryDisplay();
@@ -139,13 +197,16 @@ const create_connect_win = () => {
     },
     width: connect_win_width,
     height: conenct_win_height,
-    //autoHideMenuBar: true,
+    autoHideMenuBar: true,
   });
 
   ipcMain.on('app: connect_to_server', function(event, socket_info) {
     console.log(socket_info);
     client.socket.connect(socket_info.port, socket_info.ip);
     client.username = socket_info.username;
+    clientudp.username = socket_info.username;
+    clientudp.ip = socket_info.ip;
+    clientudp.port = socket_info.port;
   });
 
   ipcMain.on('send_chat_msg', function(event, msg) {
@@ -156,6 +217,10 @@ const create_connect_win = () => {
     console.log('wrote msg = ' + msg_to_send);
   });
 
+  ipcMain.on('restart_app', function() {
+    autoUpdater.quitAndInstall();
+  });
+
   window.win.loadFile('src/components/connect/index.html');
   window.current_window = 'src/components/connect/index.html';
 }
@@ -164,6 +229,7 @@ const create_connect_win = () => {
 // entry point
 app.whenReady().then(() => {
   create_connect_win();
+  autoUpdater.checkForUpdatesAndNotify();
 
   app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0)

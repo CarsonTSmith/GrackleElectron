@@ -4,6 +4,37 @@
     "use strict";
 
 
+
+    const notification = document.getElementById('notification');
+    const message = document.getElementById('message');
+    const restartButton = document.getElementById('restart-button');
+    const closeButton = document.getElementById('close-button');
+
+    window.electronAPI.update_available(function(event) {
+        message.innerText = 'A new update is available. Downloading now...';
+        notification.classList.remove('hidden');
+    });
+    
+    window.electronAPI.update_downloaded(function(event) {
+        message.innerText = 'Update Downloaded. It will be installed on restart. Restart now?';
+        restartButton.classList.remove('hidden');
+        notification.classList.remove('hidden');
+    });
+
+    restartButton.addEventListener('click', function() {
+        window.electronAPI.send('restart_app');
+    });
+
+    closeButton.addEventListener('click', function() {
+        notification.classList.add('hidden');
+    });
+
+
+
+
+
+
+
     /*==================================================================
     [ Validate ]*/
     var input = $('.validate-input .input100');
