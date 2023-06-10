@@ -1,3 +1,2 @@
 # GrackleElectron
-# GrackleElectronReleases
-# GrackleElectronReleases
+This is an Electron cllient that works with Grackle Server.
